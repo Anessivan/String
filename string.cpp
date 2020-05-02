@@ -21,6 +21,23 @@ String::String(const char* s)
 	data[size] = 0;
 }
 
+String::String(const char c)
+{
+	if (c != 0)
+	{
+		size = 2;
+		data = new char[2];
+		data[0] = c;
+		data[1] = 0;
+	}
+	else
+	{
+		size = 1;
+		data = new char[2];
+		data[0] = 0;
+	}
+}
+
 String::String(const String& s)
 {
 	data = nullptr;
@@ -31,7 +48,7 @@ String::String(const String& s)
 	for (int i = 0; i < size; i++)
 		data[i] = s[i];
 }
-String::String(String& s, int begin, int end)
+String::String(const String& s, int begin, int end)
 {
 	data = nullptr;
 	size = end - begin + 2;
@@ -40,13 +57,13 @@ String::String(String& s, int begin, int end)
 		throw "Memmory generation error";
 	for (int i = 0; i < size; i++)
 		data[i] = s[begin + i];
-	data[size] = 0;
+	data[size - 1] = 0;
 }
 String::~String()
 {
 	if (data != nullptr)
 	{
-		delete[] data;
+		delete[] data; //part down here
 		data = nullptr;
 	}
 	size = 0;
@@ -72,6 +89,17 @@ String String::operator+(const String& s) const
 	}
 	return res;
 }
+String String::operator+(const char c)const
+{
+	String res(*this);
+	if (res.size != 1)
+		res.SetSize(size + 1);
+	else
+		res.SetSize(size + 2);
+	int ressize = res.length();
+	res[ressize - 2] = c;
+	return res;
+}
 
 bool String::operator==(const String& s) const
 {
@@ -87,6 +115,11 @@ bool String::operator==(const String& s) const
 	}
 	return false;
 }
+bool String::operator!=(const String& s) const
+{
+	if (*this == s) return false;
+	return true;
+}
 String& String::operator=(const String& s)
 {
 	if (*this == s) return *this;
@@ -99,6 +132,13 @@ String& String::operator=(const String& s)
 		throw "Memmory generation error";
 	for (int i = 0; i < size; i++)
 		data[i] = s[i];
+	return *this;
+}
+
+String& String::operator=(const char c)
+{
+	String temp(c);
+	*this = temp;
 	return *this;
 }
 
@@ -121,10 +161,15 @@ bool String::operator>(const String& s) const
 	}
 	return false;
 }
+void String::copy(const String& s, int begin, int end)
+{
+	String copy(s, begin, end);
+	*this = copy;
+}
 int String::posc(const char c)
 {
 	for (int i = 0; i < size; i++)
-		if (data[i] == c)
+		if (this->data[i] == c)
 			return i;
 	return 0;
 }
@@ -162,16 +207,29 @@ int String::poscountc(const char c)
 			count++;
 	return count;
 }
-String* String::part(char c) // Доделать
+String* String::part(char c) // Разбиение строки на подстроки по символу. Возвращает массив строк    
 {
 	int count = this->poscountc(c);
-	String* res = new String[count + 1];
-	res[0] = *this;
-	for (int i = 1; i < count; i++)
+	String* res = nullptr;
+	int arraysize;
+	if (size - 2 != this->posclast(c) || this ->posc(c) != 0)
 	{
-		String s(res[i - 1], res[i - 1].posc(c) + 1, res[i - 1].posclast(c));
-		res[i] = s;
-		res[i - 1].SetSize(res[i - 1].posc(c));
+		arraysize = count + 1;
+		res = new String[arraysize];
+	}
+	else
+	{
+		arraysize = count;
+		res = new String[arraysize];
+	}
+	res[0] = *this;
+	for (int i = 1; i < arraysize; i++)
+	{
+		int begin = res[i - 1].posc(c);
+		int end = res[i - 1].length() - 1;
+		String copy(res[i-1], begin + 1, end);
+		res[i] = copy;
+		res[i - 1].SetSize(begin + 1);
 	}
 	return res;
 }

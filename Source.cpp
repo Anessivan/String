@@ -28,4 +28,19 @@ int main()
 	String repeat;
 	input = repeat.repeater(input, amount);
 	std::cout << input << std::endl;
+	char c;
+	std::cout << "Enter char separator" << std::endl;
+	std::cin >> c;
+	String* array = nullptr;
+	array = input.part(c);
+	int n;
+	if (input.length() - 2 != input.posclast(c))
+		n = input.poscountc(c) + 1;
+	else
+		n = input.poscountc(c);
+	for (int i = 0; i < n; i++)
+	{
+		String copy = array[i];
+		std::cout << copy << std::endl;
+	}
 }
