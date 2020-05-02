@@ -12,7 +12,7 @@ String::String(const char* s)
 	data = nullptr;
 	size = strlen(s) + 1;
 	data = new char[size + 1];
-	if (data == nullptr)
+	if (data == nullptr) //проверка выделения памяти
 		throw "Memmory generation error";
 	for (int i = 0; i < size; i++)
 	{
@@ -51,7 +51,7 @@ String::String(const String& s)
 String::String(const String& s, int begin, int end)
 {
 	data = nullptr;
-	size = end - begin + 2;
+	size = end - begin + 2;// рассчет нового размера строки(из последнего номера начальный + последний символ + место для 0)
 	data = new char[size];
 	if (data == nullptr)
 		throw "Memmory generation error";
@@ -82,10 +82,10 @@ char& String::operator[](int number) const
 String String::operator+(const String& s) const
 {
 	String res(*this);
-	res.SetSize(size + s.length() - 1);
+	res.SetSize(size + s.length() - 1);//изменение размера объекта на необходимый
 	for (int i = size - 1; i < res.length(); i++)
 	{
-		res[i] = s[i - size + 1];
+		res[i] = s[i - size + 1];//К изначальному объекту приписывается строка s
 	}
 	return res;
 }
@@ -103,14 +103,14 @@ String String::operator+(const char c)const
 
 bool String::operator==(const String& s) const
 {
-	if (size == s.length())
+	if (size == s.length())// сравнение размеров
 	{
 		int i = 0;
-		while (data[i] == s[i])
+		while (data[i] == s[i])//поэлементное сравнение
 		{
 			i++;
 		}
-		if (i == size - 1)
+		if (i == size - 1) //Если счетчик совпавших подряд символов совпал с размером строк, то выражение истинно
 			return true;
 	}
 	return false;
@@ -122,12 +122,12 @@ bool String::operator!=(const String& s) const
 }
 String& String::operator=(const String& s)
 {
-	if (*this == s) return *this;
-	if (data != nullptr)
+	if (*this == s) return *this;// проверка на самокопирование
+	if (data != nullptr)//очистка памяти изначального объекта
 		delete[] data;
 	size = s.length();
 	data = nullptr;
-	data = new char[size];
+	data = new char[size]; // выделение необходимого количества памяти для новых данных
 	if (data == nullptr)
 		throw "Memmory generation error";
 	for (int i = 0; i < size; i++)
@@ -144,7 +144,7 @@ String& String::operator=(const char c)
 
 bool String::operator<(const String& s) const
 {
-	for (int i = 0; i < (size < s.length() ? size : s.length()); i++)
+	for (int i = 0; i < (size < s.length() ? size : s.length()); i++) // сравнение символов с нулевого по размер наименьшей строки
 	{
 		if (data[i] < s[i]) return true;
 		else if (data[i] > s[i]) return false;
@@ -154,7 +154,7 @@ bool String::operator<(const String& s) const
 
 bool String::operator>(const String& s) const
 {
-	for (int i = 0; i < (size < s.length() ? size : s.length()); i++)
+	for (int i = 0; i < (size < s.length() ? size : s.length()); i++) //сравнение символов с нулевого по размер наименьшей строки
 	{
 		if (data[i] > s[i]) return true;
 		else if (data[i] < s[i]) return false;
@@ -166,14 +166,14 @@ void String::copy(const String& s, int begin, int end)
 	String copy(s, begin, end);
 	*this = copy;
 }
-int String::posc(const char c)
+int String::posc(const char c) // Поиск первого вхождения символа в строку, возвращает номер этого символа
 {
 	for (int i = 0; i < size; i++)
 		if (this->data[i] == c)
 			return i;
 	return 0;
 }
-int String::posclast(const char c)
+int String::posclast(const char c)//Поиск последнего вхождения символа в строке возвращает номер этого символа
 {
 	int last = 0;
 	for (int i = 0; i < size; i++)
@@ -181,7 +181,7 @@ int String::posclast(const char c)
 			last = i;
 	return last;
 }
-int String::pos(const char* s)
+int String::pos(const char* s) //Поиск первого вхождения подстроки в строку
 {
 	int sizechar = strlen(s);
 	int count = 0;
@@ -199,7 +199,7 @@ int String::pos(const char* s)
 		return i - count;
 	return 0;
 }
-int String::poscountc(const char c)
+int String::poscountc(const char c) // Поиск количества вхождений символа в строку
 {
 	int count = 0;
 	for (int i = 0; i < size; i++)
@@ -227,13 +227,13 @@ String* String::part(char c) // Разбиение строки на подстроки по символу. Возвра
 	{
 		int begin = res[i - 1].posc(c);
 		int end = res[i - 1].length() - 1;
-		String copy(res[i-1], begin + 1, end);
+		String copy(res[i - 1], begin + 1, end);
 		res[i] = copy;
 		res[i - 1].SetSize(begin + 1);
 	}
 	return res;
 }
-String String::repeater(String &s, int n)
+String String::repeater(String &s, int n)// Метод, дублирующий строку n раз
 {
 	if (s.length() == 0)
 		throw "Length = 0";
@@ -244,28 +244,33 @@ String String::repeater(String &s, int n)
 	}
 	return res;
 }
-void String::SetSize(int n)
+void String::SetSize(int n)// Метод изменения размера объекта
 {
-	int copysize = size;
-	char* copy = data;
+	if(size != n)
+	{
+	int copysize = size; 
+	char* copy = data; // сохранение изначальных данных
 	size = n;
 	data = nullptr;
 	data = new char[size];
 	if (data == nullptr)
 		throw "Memmory generation error";
-	if (n >= copysize)
+	if (n >= copysize) //Случай, когда мы меняем размер памяти на больший
 	{
 		for (int i = 0; i < copysize; i++)
 			data[i] = copy[i];
 		data[n - 1] = 0;
 	}
-	else
+	else //Случай, когда мы изменям размер на меньший
 	{
 		for (int i = 0; i < n; i++)
 			data[i] = copy[i];
 		data[n - 1] = 0;
 	}
 	delete[] copy;
+	}
+	else 
+		std::cout << "Same size" << std::endl;
 }
 
 std::ostream& operator<<(std::ostream& out, const String& s)
