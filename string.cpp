@@ -1,4 +1,4 @@
-#include "String.h"
+п»ї#include "String.h"
 #include <iostream>
 String::String()
 {
@@ -12,7 +12,7 @@ String::String(const char* s)
 	data = nullptr;
 	size = strlen(s) + 1;
 	data = new char[size + 1];
-	if (data == nullptr) //проверка выделения памяти
+	if (data == nullptr) //РїСЂРѕРІРµСЂРєР° РІС‹РґРµР»РµРЅРёСЏ РїР°РјСЏС‚Рё
 		throw "Memmory generation error";
 	for (int i = 0; i < size; i++)
 	{
@@ -51,7 +51,7 @@ String::String(const String& s)
 String::String(const String& s, int begin, int end)
 {
 	data = nullptr;
-	size = end - begin + 2;// рассчет нового размера строки(из последнего номера начальный + последний символ + место для 0)
+	size = end - begin + 2;// СЂР°СЃСЃС‡РµС‚ РЅРѕРІРѕРіРѕ СЂР°Р·РјРµСЂР° СЃС‚СЂРѕРєРё(РёР· РїРѕСЃР»РµРґРЅРµРіРѕ РЅРѕРјРµСЂР° РЅР°С‡Р°Р»СЊРЅС‹Р№ + РїРѕСЃР»РµРґРЅРёР№ СЃРёРјРІРѕР» + РјРµСЃС‚Рѕ РґР»СЏ 0)
 	data = new char[size];
 	if (data == nullptr)
 		throw "Memmory generation error";
@@ -82,10 +82,10 @@ char& String::operator[](int number) const
 String String::operator+(const String& s) const
 {
 	String res(*this);
-	res.SetSize(size + s.length() - 1);//изменение размера объекта на необходимый
+	res.SetSize(size + s.length() - 1);//РёР·РјРµРЅРµРЅРёРµ СЂР°Р·РјРµСЂР° РѕР±СЉРµРєС‚Р° РЅР° РЅРµРѕР±С…РѕРґРёРјС‹Р№
 	for (int i = size - 1; i < res.length(); i++)
 	{
-		res[i] = s[i - size + 1];//К изначальному объекту приписывается строка s
+		res[i] = s[i - size + 1];//Рљ РёР·РЅР°С‡Р°Р»СЊРЅРѕРјСѓ РѕР±СЉРµРєС‚Сѓ РїСЂРёРїРёСЃС‹РІР°РµС‚СЃСЏ СЃС‚СЂРѕРєР° s
 	}
 	return res;
 }
@@ -103,14 +103,14 @@ String String::operator+(const char c)const
 
 bool String::operator==(const String& s) const
 {
-	if (size == s.length())// сравнение размеров
+	if (size == s.length())// СЃСЂР°РІРЅРµРЅРёРµ СЂР°Р·РјРµСЂРѕРІ
 	{
 		int i = 0;
-		while (data[i] == s[i])//поэлементное сравнение
+		while (data[i] == s[i])//РїРѕСЌР»РµРјРµРЅС‚РЅРѕРµ СЃСЂР°РІРЅРµРЅРёРµ
 		{
 			i++;
 		}
-		if (i == size - 1) //Если счетчик совпавших подряд символов совпал с размером строк, то выражение истинно
+		if (i == size - 1) //Р•СЃР»Рё СЃС‡РµС‚С‡РёРє СЃРѕРІРїР°РІС€РёС… РїРѕРґСЂСЏРґ СЃРёРјРІРѕР»РѕРІ СЃРѕРІРїР°Р» СЃ СЂР°Р·РјРµСЂРѕРј СЃС‚СЂРѕРє, С‚Рѕ РІС‹СЂР°Р¶РµРЅРёРµ РёСЃС‚РёРЅРЅРѕ
 			return true;
 	}
 	return false;
@@ -122,12 +122,12 @@ bool String::operator!=(const String& s) const
 }
 String& String::operator=(const String& s)
 {
-	if (*this == s) return *this;// проверка на самокопирование
-	if (data != nullptr)//очистка памяти изначального объекта
+	if (*this == s) return *this;// РїСЂРѕРІРµСЂРєР° РЅР° СЃР°РјРѕРєРѕРїРёСЂРѕРІР°РЅРёРµ
+	if (data != nullptr)//РѕС‡РёСЃС‚РєР° РїР°РјСЏС‚Рё РёР·РЅР°С‡Р°Р»СЊРЅРѕРіРѕ РѕР±СЉРµРєС‚Р°
 		delete[] data;
 	size = s.length();
 	data = nullptr;
-	data = new char[size]; // выделение необходимого количества памяти для новых данных
+	data = new char[size]; // РІС‹РґРµР»РµРЅРёРµ РЅРµРѕР±С…РѕРґРёРјРѕРіРѕ РєРѕР»РёС‡РµСЃС‚РІР° РїР°РјСЏС‚Рё РґР»СЏ РЅРѕРІС‹С… РґР°РЅРЅС‹С…
 	if (data == nullptr)
 		throw "Memmory generation error";
 	for (int i = 0; i < size; i++)
@@ -144,7 +144,7 @@ String& String::operator=(const char c)
 
 bool String::operator<(const String& s) const
 {
-	for (int i = 0; i < (size < s.length() ? size : s.length()); i++) // сравнение символов с нулевого по размер наименьшей строки
+	for (int i = 0; i < (size < s.length() ? size : s.length()); i++) // СЃСЂР°РІРЅРµРЅРёРµ СЃРёРјРІРѕР»РѕРІ СЃ РЅСѓР»РµРІРѕРіРѕ РїРѕ СЂР°Р·РјРµСЂ РЅР°РёРјРµРЅСЊС€РµР№ СЃС‚СЂРѕРєРё
 	{
 		if (data[i] < s[i]) return true;
 		else if (data[i] > s[i]) return false;
@@ -154,7 +154,7 @@ bool String::operator<(const String& s) const
 
 bool String::operator>(const String& s) const
 {
-	for (int i = 0; i < (size < s.length() ? size : s.length()); i++) //сравнение символов с нулевого по размер наименьшей строки
+	for (int i = 0; i < (size < s.length() ? size : s.length()); i++) //СЃСЂР°РІРЅРµРЅРёРµ СЃРёРјРІРѕР»РѕРІ СЃ РЅСѓР»РµРІРѕРіРѕ РїРѕ СЂР°Р·РјРµСЂ РЅР°РёРјРµРЅСЊС€РµР№ СЃС‚СЂРѕРєРё
 	{
 		if (data[i] > s[i]) return true;
 		else if (data[i] < s[i]) return false;
@@ -166,14 +166,14 @@ void String::copy(const String& s, int begin, int end)
 	String copy(s, begin, end);
 	*this = copy;
 }
-int String::posc(const char c) // Поиск первого вхождения символа в строку, возвращает номер этого символа
+int String::posc(const char c) // РџРѕРёСЃРє РїРµСЂРІРѕРіРѕ РІС…РѕР¶РґРµРЅРёСЏ СЃРёРјРІРѕР»Р° РІ СЃС‚СЂРѕРєСѓ, РІРѕР·РІСЂР°С‰Р°РµС‚ РЅРѕРјРµСЂ СЌС‚РѕРіРѕ СЃРёРјРІРѕР»Р°
 {
 	for (int i = 0; i < size; i++)
 		if (this->data[i] == c)
 			return i;
 	return 0;
 }
-int String::posclast(const char c)//Поиск последнего вхождения символа в строке возвращает номер этого символа
+int String::posclast(const char c)//РџРѕРёСЃРє РїРѕСЃР»РµРґРЅРµРіРѕ РІС…РѕР¶РґРµРЅРёСЏ СЃРёРјРІРѕР»Р° РІ СЃС‚СЂРѕРєРµ РІРѕР·РІСЂР°С‰Р°РµС‚ РЅРѕРјРµСЂ СЌС‚РѕРіРѕ СЃРёРјРІРѕР»Р°
 {
 	int last = 0;
 	for (int i = 0; i < size; i++)
@@ -181,7 +181,7 @@ int String::posclast(const char c)//Поиск последнего вхождения символа в строке 
 			last = i;
 	return last;
 }
-int String::pos(const char* s) //Поиск первого вхождения подстроки в строку
+int String::pos(const char* s) //РџРѕРёСЃРє РїРµСЂРІРѕРіРѕ РІС…РѕР¶РґРµРЅРёСЏ РїРѕРґСЃС‚СЂРѕРєРё РІ СЃС‚СЂРѕРєСѓ
 {
 	int sizechar = strlen(s);
 	int count = 0;
@@ -199,7 +199,7 @@ int String::pos(const char* s) //Поиск первого вхождения подстроки в строку
 		return i - count;
 	return 0;
 }
-int String::poscountc(const char c) // Поиск количества вхождений символа в строку
+int String::poscountc(const char c) // РџРѕРёСЃРє РєРѕР»РёС‡РµСЃС‚РІР° РІС…РѕР¶РґРµРЅРёР№ СЃРёРјРІРѕР»Р° РІ СЃС‚СЂРѕРєСѓ
 {
 	int count = 0;
 	for (int i = 0; i < size; i++)
@@ -207,7 +207,7 @@ int String::poscountc(const char c) // Поиск количества вхождений символа в стро
 			count++;
 	return count;
 }
-String* String::part(char c) // Разбиение строки на подстроки по символу. Возвращает массив строк    
+String* String::part(char c) // Р Р°Р·Р±РёРµРЅРёРµ СЃС‚СЂРѕРєРё РЅР° РїРѕРґСЃС‚СЂРѕРєРё РїРѕ СЃРёРјРІРѕР»Сѓ. Р’РѕР·РІСЂР°С‰Р°РµС‚ РјР°СЃСЃРёРІ СЃС‚СЂРѕРє    
 {
 	int count = this->poscountc(c);
 	String* res = nullptr;
@@ -233,7 +233,7 @@ String* String::part(char c) // Разбиение строки на подстроки по символу. Возвра
 	}
 	return res;
 }
-String String::repeater(String &s, int n)// Метод, дублирующий строку n раз
+String String::repeater(String &s, int n)// РњРµС‚РѕРґ, РґСѓР±Р»РёСЂСѓСЋС‰РёР№ СЃС‚СЂРѕРєСѓ n СЂР°Р·
 {
 	if (s.length() == 0)
 		throw "Length = 0";
@@ -244,24 +244,24 @@ String String::repeater(String &s, int n)// Метод, дублирующий строку n раз
 	}
 	return res;
 }
-void String::SetSize(int n)// Метод изменения размера объекта
+void String::SetSize(int n)// РњРµС‚РѕРґ РёР·РјРµРЅРµРЅРёСЏ СЂР°Р·РјРµСЂР° РѕР±СЉРµРєС‚Р°
 {
 	if(size != n)
 	{
 	int copysize = size; 
-	char* copy = data; // сохранение изначальных данных
+	char* copy = data; // СЃРѕС…СЂР°РЅРµРЅРёРµ РёР·РЅР°С‡Р°Р»СЊРЅС‹С… РґР°РЅРЅС‹С…
 	size = n;
 	data = nullptr;
 	data = new char[size];
 	if (data == nullptr)
 		throw "Memmory generation error";
-	if (n >= copysize) //Случай, когда мы меняем размер памяти на больший
+	if (n >= copysize) //РЎР»СѓС‡Р°Р№, РєРѕРіРґР° РјС‹ РјРµРЅСЏРµРј СЂР°Р·РјРµСЂ РїР°РјСЏС‚Рё РЅР° Р±РѕР»СЊС€РёР№
 	{
 		for (int i = 0; i < copysize; i++)
 			data[i] = copy[i];
 		data[n - 1] = 0;
 	}
-	else //Случай, когда мы изменям размер на меньший
+	else //РЎР»СѓС‡Р°Р№, РєРѕРіРґР° РјС‹ РёР·РјРµРЅСЏРј СЂР°Р·РјРµСЂ РЅР° РјРµРЅСЊС€РёР№
 	{
 		for (int i = 0; i < n; i++)
 			data[i] = copy[i];
